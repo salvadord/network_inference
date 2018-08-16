@@ -48,14 +48,14 @@ netParams.stimTargetParams['bkg->all'] = {'source': 'bkg', 'conds': {'cellType':
 netParams.connParams['E->all'] = {
   'preConds': {'cellType': 'E'}, 'postConds': {'y': [100,1000]},  #  E -> all (100-1000 um)
   'probability': 0.1 ,                  # probability of connection
-  'weight': '0.005*post_ynorm',         # synaptic weight 
+  'weight': 0.1,         # synaptic weight 
   'delay': 'dist_3D/propVelocity',      # transmission delay (ms) 
   'synMech': 'exc'}                     # synaptic mechanism 
 
 netParams.connParams['I->E'] = {
   'preConds': {'cellType': 'I'}, 'postConds': {'pop': ['E2','E4','E5']},       #  I -> E
-  'probability': '0.4*exp(-dist_3D/probLengthConst)',   # probability of connection
-  'weight': 0.001,                                      # synaptic weight 
+  'probability': 0.2,   # probability of connection
+  'weight': 0.1,                                      # synaptic weight 
   'delay': 'dist_3D/propVelocity',                      # transmission delay (ms) 
   'synMech': 'inh'}                                     # synaptic mechanism 
 
@@ -67,13 +67,14 @@ simConfig.dt = 0.1               # Internal integration timestep to use
 simConfig.verbose = False            # Show detailed messages 
 simConfig.recordTraces = {'V_soma':{'sec':'soma','loc':0.5,'var':'v'}}  # Dict with traces to record
 simConfig.recordStep = 1             # Step size in ms to save data (eg. V traces, LFP, etc)
-simConfig.filename = 'net1'  # Set file output name
+simConfig.filename = 'data/net1'  # Set file output name
 simConfig.saveJson = True         # Save params, network and sim output to pickle file
 
 
-simConfig.analysis['plot2Dnet'] = {'saveFig': 1, 'showFig': 0}            # plot 2D visualization of cell positions and connections
-simConfig.analysis['plotConn'] = {'saveFig': 1, 'showFig': 0}             # plot connectivity matrix
+#simConfig.analysis['plot2Dnet'] = {'saveFig': 1, 'showFig': 0}            # plot 2D visualization of cell positions and connections
+simConfig.analysis['plotConn'] = {'includePre': ['allCells'], 'includePost': ['allCells'], 'saveFig': 1, 'showFig': 0}             # plot connectivity matrix
 
 # Create network and run simulation
 sim.create(netParams = netParams, simConfig = simConfig)    
 sim.analyze()    
+sim.analysis.plotConn(feature='probability', includePre=['allCells'], includePost=['allCells'], saveFig=True, showFig=False)
