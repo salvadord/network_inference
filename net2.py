@@ -48,7 +48,7 @@ netParams.stimTargetParams['bkg->all'] = {'source': 'bkg', 'conds': {'cellType':
 netParams.connParams['E->all'] = {
   'preConds': {'cellType': 'E'}, 'postConds': {'y': [100,1000]},  #  E -> all (100-1000 um)
   'probability': 0.1 ,                  # probability of connection
-  'weight': '0.005*post_ynorm',         # synaptic weight 
+  'weight': 0.001, #'0.005*post_ynorm',         # synaptic weight 
   'delay': 'dist_3D/propVelocity',      # transmission delay (ms) 
   'synMech': 'exc'}                     # synaptic mechanism 
 
