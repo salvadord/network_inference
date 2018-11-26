@@ -109,6 +109,7 @@ if __name__ == '__main__':
     # run inference SBM algorithm to extract groupings
     # --------------------------------------------------------------------------
     if loadState:
+        print('Loading the nested stochastic block model...')
         import pickle
         with open('data/m1_500k_state.pkl', 'rb') as f:
             state = pickle.load(f)['state']
@@ -212,11 +213,16 @@ if __name__ == '__main__':
     img = Image.open("data/m1_infer_state.png")
     draw = ImageDraw.Draw(img)
     # font = ImageFont.truetype("sans-serif.ttf", 16)
-    
+    font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 22)
+
     numCells = state.levels[0].wr.a.sum()
     numGroups = state.levels[1].wr.a.sum()
     dpi = 100
-    offset = 6.0 
+    baseOffset = 6.0
+    factorX=0.1
+    factorY=0.1
+    popXOffset = {16:-3, 13:-6, 11:-7.5, 24:-4.5, 25:-3.5, 23:-1.5, 10:0, 22:0, 21:0} 
+    popYOffset = {11:5.5, 24:3, 25:1, 23:0, 10:4, 22:0, 21:-1} 
     for i in range(numGroups):
         inode = numCells+i
         nodePos = tpos[inode]
@@ -224,7 +230,11 @@ if __name__ == '__main__':
         #print(((nodePos[0]+offset)*dpi,  (nodePos[1]+offset)*dpi))
         gpops = [k for k,v in groupPops[0][i].items() if v > 0] 
         gpops = ','.join(gpops)
-        draw.text(((nodePos[0]+offset)*dpi, (nodePos[1]+offset)*dpi), 'G%d\n(%s)'%(i,gpops), (0,0,0))
+        offsetX=baseOffset+popXOffset[i]*factorX if i in popXOffset else baseOffset
+        offsetY=baseOffset+popYOffset[i]*factorY if i in popYOffset else baseOffset
+        draw.text(((nodePos[0]+offsetX)*dpi, (nodePos[1]+offsetY)*dpi), 'G%d (%s)'%(i,gpops), (0,0,0), font=font)
+        #draw.text(((nodePos[0]+offset)*dpi, (nodePos[1]+offset)*dpi), '\n%s'%(gpops), (0,0,0), font=font)
+        
     img.save('data/m1_infer_state_labeled.png') 
 
 
