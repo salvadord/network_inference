@@ -15,6 +15,7 @@ Execution time on a single core was 890 seconds, suggesting it is well-suited fo
 ![m1_infer_level_0_groupPiecharts](https://github.com/salvadord/network_inference/blob/master/data/m1_infer_level_0_groupPiecharts.png)
 
 - The 32 inferred groupings represented by colors using the original cell locations (note cell locations were not known by the inference algorithm):
+
 ![m1_infer_state_sfdp](https://github.com/salvadord/network_inference/blob/master/data/m1_infer_state_sfdp.png)
 
 - Connectivity matrix of the 32 inferred groupings. Matrix closely matches original connectivity rules:
